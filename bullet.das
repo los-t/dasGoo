@@ -19,16 +19,17 @@ let BULLET_DAMAGE = 1.5
 def spawn_bullet(at, vel: float2)
   create_entity <| @(eid, comp)
     set(comp, "eid", eid)
-    apply_decs_template(comp, [[Movement pos = at, vel = vel]])
+    apply_decs_template(comp, [[Position x = at.x, y = at.y]])
+    apply_decs_template(comp, [[Velocity x = vel.x, y = vel.y]])
     apply_decs_template(comp, [[Bullet maxRange = BULLET_MAX_RANGE,
                                        lifetime = BULLET_LIFETIME,
                                        damage = BULLET_DAMAGE]])
 
 
 [decs(stage = update)]
-def update_bullet(var b: Bullet; m: Movement; eid: EntityId)
+def update_bullet(var b: Bullet; vel: Velocity; eid: EntityId)
   let dt = get_delta_time()
-  let delta = m.vel * dt
+  let delta = float2(vel.x * dt, vel.y * dt)
   b.maxRange -= length(delta)
   b.lifetime -= dt
   if (b.maxRange < 0.0 || b.lifetime < 0.0)
@@ -36,5 +37,5 @@ def update_bullet(var b: Bullet; m: Movement; eid: EntityId)
 
 
 [decs(stage = draw)]
-def draw_bullet(b: Bullet; m: Movement)
-  fill_circle(m.pos.x, m.pos.y, 2.0, 0xFFFF0000)
+def draw_bullet(pos: Position; tag: Bullet)
+  fill_circle(pos.x, pos.y, 2.0, 0xFFFF0000)

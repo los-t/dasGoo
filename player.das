@@ -11,19 +11,21 @@ require playerInput
 def spawn_player(at: float2)
   create_entity <| @(eid, comp)
     set(comp, "eid", eid)
-    apply_decs_template(comp, [[Movement pos = at]])
+    apply_decs_template(comp, [[Position x = at.x, y = at.y]])
+    apply_decs_template(comp, [[Velocity]])
     apply_decs_template(comp, [[MovementLimits x = float(get_screen_width()),
                                                y = float(get_screen_height())]])
     apply_decs_template(comp, [[PlayerInput]])
 
 
 [decs(stage = apply_input)]
-def apply_player_input(var m: Movement; input: PlayerInput)
-  m.vel += input.dir
+def apply_player_input(var vel: Velocity; pos: Position; input: PlayerInput)
+  vel.x += input.dir.x
+  vel.y += input.dir.y
   if (input.fire)
-    spawn_bullet(m.pos, m.vel * 10.0)
+    spawn_bullet(float2(pos.x, pos.y), float2(vel.x * 10.0, vel.y * 10.0))
 
 
 [decs(stage = draw)]
-def draw_player(m: Movement; i: PlayerInput)
-  fill_circle(m.pos.x, m.pos.y, 10.0, 0xFFFFFFFF)
+def draw_player(pos: Position; tag: PlayerInput)
+  fill_circle(pos.x, pos.y, 10.0, 0xFFFFFFFF)
