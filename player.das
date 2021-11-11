@@ -4,36 +4,23 @@ require daslib/media
 require daslib/decs_boost
 
 require bullet
+require playerInput
 
 [decs_template]
 struct Player
   pos: float2
   vel: float2
 
-[decs_template]
-struct Input
-  dir: float2
-  fire: bool
-
 
 def spawn_player(at: float2)
   create_entity <| @(eid, comp)
     set(comp, "eid", eid)
     apply_decs_template(comp, [[Player pos = at]])
-    apply_decs_template(comp, [[Input]])
-
-
-[decs(stage = input)]
-def update_input(var input: Input)
-  input.dir.x = get_key(VK_L) ? 1.0 : 0.0
-  input.dir.x += get_key(VK_H) ? -1.0 : 0.0
-  input.dir.y = get_key(VK_K) ? 1.0 : 0.0
-  input.dir.y += get_key(VK_J) ? -1.0 : 0.0
-  input.fire = get_key(VK_SPACE)
+    apply_decs_template(comp, [[PlayerInput]])
 
 
 [decs(stage = update)]
-def update_player(var p: Player; input: Input)
+def update_player(var p: Player; input: PlayerInput)
   let dt = get_delta_time()
   let limits = float2(float(get_screen_width()), float(get_screen_height()))
   p.vel += input.dir
@@ -43,9 +30,6 @@ def update_player(var p: Player; input: Input)
   if (p.pos.y >= limits.y || p.pos.y <= 0.0)
     p.vel.y *= -1.0
 
-
-[decs(stage = update)]
-def update_shooting(var p: Player; input: Input)
   if (input.fire)
     spawn_bullet(p.pos, p.vel * 10.0)
 
