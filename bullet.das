@@ -4,6 +4,7 @@ require daslib/math
 require daslib/media
 require daslib/decs_boost
 
+require drawable
 require movement
 
 [decs_template]
@@ -16,7 +17,7 @@ let BULLET_MAX_RANGE = 1280.0
 let BULLET_LIFETIME = 30.0
 let BULLET_DAMAGE = 1.5
 
-def spawn_bullet(at, vel: float2)
+def spawn_bullet(at, vel: float2; var tex: ImageHandle)
   create_entity <| @(eid, comp)
     set(comp, "eid", eid)
     apply_decs_template(comp, [[Position x = at.x, y = at.y]])
@@ -24,6 +25,7 @@ def spawn_bullet(at, vel: float2)
     apply_decs_template(comp, [[Bullet maxRange = BULLET_MAX_RANGE,
                                        lifetime = BULLET_LIFETIME,
                                        damage = BULLET_DAMAGE]])
+    apply_decs_template(comp, [[Drawable sprite = tex]])
 
 
 [decs(stage = update)]

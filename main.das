@@ -5,19 +5,25 @@ require daslib/decs_boost
 
 require player
 require enemy
+require resources
 
 var lastDt: float
 
+let imagePaths <- {{ "player" => "res/playerShip3_red.png";
+                     "bullet" => "res/laserRed07.png";
+                     "enemy"  => "res/ufoGreen.png" }}
 
 [export]
 def initialize(is_hard_reload: bool)
   disable_auto_upscale()
   set_window_title("DasHackathon")
 
+  load_images(imagePaths)
+
   restart()
-  spawn_player(float2(100, 100))
+  spawn_player(float2(100, 100), get_image("player"))
   for i in range(0, 10)
-    spawn_enemy(float2(i * 100, i * 20), float2(5.0, 1.5))
+    spawn_enemy(float2(i * 100, i * 20), float2(5.0, 1.5), get_image("enemy"))
   commit()
 
 
