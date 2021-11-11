@@ -21,6 +21,7 @@ def initialize(is_hard_reload: bool)
 [export]
 def act(dt: float)
   lastDt = dt
+  decs_stage("input")
   decs_stage("update")
 
 
