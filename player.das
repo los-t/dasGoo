@@ -3,27 +3,28 @@ options indenting = 2
 require daslib/media
 require daslib/decs_boost
 
-require resources
-
 require component/drawable
-require projectile
 require component/movement
 require component/orientation
 require component/playerInput
 require component/screenBounce
 require component/collision
+require component/gun
 
 
 def spawn_player(at: float2; var tex: ImageHandle)
+  let halfSize = float2(tex.width/2, tex.height/2)
+  let gunPointOffset = halfSize.y
   create_entity <| @(eid, comp)
     set(comp, "eid", eid)
     apply_decs_template(comp, [[Position pos = at]])
     apply_decs_template(comp, [[Velocity]])
     apply_decs_template(comp, [[Orientation dir = float2(1.0, 0.0)]])
-    apply_decs_template(comp, [[ScreenBounce offset = float2(tex.width/2, tex.height/2)]])
+    apply_decs_template(comp, [[ScreenBounce offset = halfSize]])
     apply_decs_template(comp, [[PlayerInput]])
     apply_decs_template(comp, [[Drawable sprite = tex]])
-    apply_decs_template(comp, [[Collision radius = 0.5 * float(max(tex.width, tex.height))]])
+    apply_decs_template(comp, [[Collision radius = 0.5 * max(halfSize.x, halfSize.y)]])
+    apply_decs_template(comp, [[Gun offset = gunPointOffset]])
 
 
 def rotate(v: float2; a: float)
@@ -33,10 +34,8 @@ def rotate(v: float2; a: float)
 
 
 [decs(stage = apply_input)]
-def apply_player_input(var v: Velocity; var o: Orientation; p: Position; input: PlayerInput)
+def apply_player_input(var v: Velocity; var o: Orientation; var g: Gun; p: Position; input: PlayerInput)
   o.dir = rotate(o.dir, input.yaw)
   normalize(o.dir)
   v.vel += o.dir * input.throttle + rotate(o.dir, 0.5*PI) * input.strafe
-  let speed = length(v.vel)
-  if (input.fire)
-    spawn_projectile(p.pos, o.dir, speed, get_image("laser"))
+  g.triggered = input.fire

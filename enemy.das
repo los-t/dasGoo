@@ -7,7 +7,6 @@ require component/drawable
 require component/orientation
 require component/movement
 require component/health
-require component/shot
 require component/screenBounce
 require component/collision
 
@@ -23,18 +22,3 @@ def spawn_enemy(at, vel: float2; var tex: ImageHandle)
     apply_decs_template(comp, [[Health hp = ENEMY_INITIAL_HEALTH]])
     apply_decs_template(comp, [[Drawable sprite = tex]])
     apply_decs_template(comp, [[Collision radius = 0.5 * float(max(tex.width, tex.height))]])
-
-
-def is_hit(proj, recp, size: float2)
-  let halfSize = 0.5 * size
-  let h = (proj.x >= recp.x - halfSize.x) && (proj.x <= recp.x + halfSize.x)
-  let v = (proj.y >= recp.y - halfSize.y) && (proj.y <= recp.y + halfSize.y)
-  return h && v
-
-
-[decs(stage = update)]
-def update_enemy(var enemy: Health; p: Position; img: Drawable; eid: EntityId)
-  query() <| $(var shot: Shot; at: Position)
-    if (is_hit(at.pos, p.pos, float2(img.sprite.width, img.sprite.height)))
-      enemy.hp -= shot.damage
-      shot.damage = 0.0

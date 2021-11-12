@@ -6,6 +6,7 @@ require daslib/decs_boost
 require player
 require enemy
 require resources
+require weaponry
 require debug
 
 var lastDt: float
