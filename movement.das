@@ -5,17 +5,16 @@ require daslib/decs_boost
 
 [decs_template]
 struct Position
-  x, y: float
+  pos: float2
 
 [decs_template]
 struct Velocity
-  x, y: float
+  vel: float2
 
 [decs(stage = move)]
-def apply_movement(var pos: Position; vel: Velocity)
+def apply_movement(var p: Position; v: Velocity)
   let dt = get_delta_time()
-  pos.x += vel.x * dt
-  pos.y += vel.y * dt
+  p.pos += v.vel * dt
 
 
 [decs_template]
@@ -24,6 +23,6 @@ struct MovementLimits
   y: float
 
 [decs(stage = move)]
-def apply_movement_limits(var vel: Velocity; pos: Position; lim: MovementLimits)
-  vel.x *= (pos.x >= lim.x || pos.x <= 0.0) ? -1.0 : 1.0
-  vel.y *= (pos.y >= lim.y || pos.y <= 0.0) ? -1.0 : 1.0
+def apply_movement_limits(var v: Velocity; p: Position; lim: MovementLimits)
+  v.vel.x *= (p.pos.x >= lim.x || p.pos.x <= 0.0) ? -1.0 : 1.0
+  v.vel.y *= (p.pos.y >= lim.y || p.pos.y <= 0.0) ? -1.0 : 1.0

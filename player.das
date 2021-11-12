@@ -15,7 +15,7 @@ require playerInput
 def spawn_player(at: float2; var tex: ImageHandle)
   create_entity <| @(eid, comp)
     set(comp, "eid", eid)
-    apply_decs_template(comp, [[Position x = at.x, y = at.y]])
+    apply_decs_template(comp, [[Position pos = at]])
     apply_decs_template(comp, [[Velocity]])
     apply_decs_template(comp, [[Orientation dir = float2(1.0, 0.0)]])
     apply_decs_template(comp, [[MovementLimits x = float(get_screen_width()),
@@ -33,11 +33,11 @@ def rotate(var v: float2; a: float)
 
 
 [decs(stage = apply_input)]
-def apply_player_input(var vel: Velocity; var o: Orientation; pos: Position; input: PlayerInput)
+def apply_player_input(var v: Velocity; var o: Orientation; p: Position; input: PlayerInput)
   o.dir = rotate(o.dir, input.yaw)
   normalize(o.dir)
-  vel.x += input.throttle
-  vel.y += input.strafe
-  let speed = length(float2(vel.x, vel.y))
+  v.vel.x += input.throttle
+  v.vel.y += input.strafe
+  let speed = length(v.vel)
   if (input.fire)
-    spawn_projectile(float2(pos.x, pos.y), o.dir, speed, get_image("laser"))
+    spawn_projectile(p.pos, o.dir, speed, get_image("laser"))

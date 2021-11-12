@@ -23,9 +23,9 @@ def spawn_projectile(at, dir: float2; speed: float; var tex: ImageHandle)
   let v = speed + PROJECTILE_SPEED
   create_entity <| @(eid, comp)
     set(comp, "eid", eid)
-    apply_decs_template(comp, [[Position x = at.x, y = at.y]])
+    apply_decs_template(comp, [[Position pos = at]])
     apply_decs_template(comp, [[Orientation dir = dir]])
-    apply_decs_template(comp, [[Velocity x = dir.x * v, y = dir.y * v]])
+    apply_decs_template(comp, [[Velocity vel = dir * v]])
     apply_decs_template(comp, [[Projectile maxRange = PROJECTILE_MAX_RANGE,
                                            lifetime = PROJECTILE_LIFETIME,
                                            damage = PROJECTILE_DAMAGE]])
@@ -33,9 +33,9 @@ def spawn_projectile(at, dir: float2; speed: float; var tex: ImageHandle)
 
 
 [decs(stage = update)]
-def update_projectile(var p: Projectile; vel: Velocity; eid: EntityId)
+def update_projectile(var p: Projectile; v: Velocity; eid: EntityId)
   let dt = get_delta_time()
-  let delta = float2(vel.x * dt, vel.y * dt)
+  let delta = v.vel * dt
   p.maxRange -= length(delta)
   p.lifetime -= dt
   if (p.maxRange < 0.0 || p.lifetime < 0.0)
