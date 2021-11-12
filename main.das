@@ -12,9 +12,7 @@ require debug
 
 
 let imagePaths <- {{ "player" => "res/playerShip3_red.png";
-                     "laser" => "res/laserRed07.png";
-                     "star" => "res/blackSmoke10.png";
-                     "enemy"  => "res/ufoGreen.png" }}
+                     "laser" => "res/laserRed07.png" }}
 
 let INIT_WAVE_DELTA = 3.0
 let INIT_WAVE_COUNT = 10
@@ -28,6 +26,7 @@ def initialize(is_hard_reload: bool)
   set_window_title("DasHackathon")
 
   load_images(imagePaths)
+  load_enemies()
   load_sky()
 
   timeToNextWave = INIT_WAVE_DELTA

@@ -28,7 +28,7 @@ def spawn_projectile(at, dir: float2; speed: float; var tex: ImageHandle)
     apply_decs_template(comp, [[RangedShot maxRange = PROJECTILE_MAX_RANGE,
                                            lifetime = PROJECTILE_LIFETIME]])
     apply_decs_template(comp, [[Shot damage = PROJECTILE_DAMAGE]])
-    apply_decs_template(comp, [[Drawable sprite = tex, color = 0xA0FFFFFF]])
+    apply_decs_template(comp, [[Drawable sprite = tex, color = 0xA0FFFFFF, scale = 0.8]])
     apply_decs_template(comp, [[DrawFirst]])
 
 
@@ -51,6 +51,6 @@ def is_hit(proj, recp, size: float2)
 [decs(stage = update)]
 def deal_weapon_damage(var enemy: Health; p: Position; img: Drawable; eid: EntityId)
   query() <| $(var shot: Shot; at: Position)
-    if (is_hit(at.pos, p.pos, float2(img.sprite.width, img.sprite.height)))
+    if (is_hit(at.pos, p.pos, img.scale * float2(img.sprite.width, img.sprite.height)))
       enemy.hp -= shot.damage
       shot.damage = 0.0

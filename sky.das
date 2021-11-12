@@ -31,7 +31,7 @@ def spawn_nebula(at: float2; var tex: ImageHandle)
     set(comp, "eid", eid)
     apply_decs_template(comp, [[Position pos = at]])
     apply_decs_template(comp, [[Orientation dir = dir]])
-    apply_decs_template(comp, [[Drawable sprite = tex, color = color]])
+    apply_decs_template(comp, [[Drawable sprite = tex, color = color, scale = 1.0]])
     apply_decs_template(comp, [[DrawBackground]])
 
 
