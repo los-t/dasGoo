@@ -21,7 +21,7 @@ def initialize(is_hard_reload: bool)
   load_images(imagePaths)
 
   restart()
-  spawn_player(float2(100, 100), get_image("player"))
+  spawn_player(float2(100.0, 0.5 * float(get_screen_height())), get_image("player"))
   for i in range(0, 10)
     spawn_enemy(float2(i * 100, i * 20), float2(5.0, 1.5), get_image("enemy"))
   commit()

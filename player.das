@@ -8,6 +8,7 @@ require resources
 require drawable
 require projectile
 require movement
+require orientation
 require playerInput
 
 
@@ -16,15 +17,27 @@ def spawn_player(at: float2; var tex: ImageHandle)
     set(comp, "eid", eid)
     apply_decs_template(comp, [[Position x = at.x, y = at.y]])
     apply_decs_template(comp, [[Velocity]])
+    apply_decs_template(comp, [[Orientation dir = float2(1.0, 0.0)]])
     apply_decs_template(comp, [[MovementLimits x = float(get_screen_width()),
                                                y = float(get_screen_height())]])
     apply_decs_template(comp, [[PlayerInput]])
     apply_decs_template(comp, [[Drawable sprite = tex]])
 
 
+def rotate(var v: float2; a: float)
+  var sn, cs: float
+  sincos(a, sn, cs)
+  v.x = v.x * cs - v.y * sn
+  v.y = v.x * sn + v.y * cs
+  return v
+
+
 [decs(stage = apply_input)]
-def apply_player_input(var vel: Velocity; pos: Position; input: PlayerInput)
-  vel.x += input.dir.x
-  vel.y += input.dir.y
+def apply_player_input(var vel: Velocity; var o: Orientation; pos: Position; input: PlayerInput)
+  o.dir = rotate(o.dir, input.yaw)
+  normalize(o.dir)
+  vel.x += input.throttle
+  vel.y += input.strafe
+  let speed = length(float2(vel.x, vel.y))
   if (input.fire)
-    spawn_projectile(float2(pos.x, pos.y), float2(vel.x * 10.0, vel.y * 10.0), get_image("laser"))
+    spawn_projectile(float2(pos.x, pos.y), o.dir, speed, get_image("laser"))
