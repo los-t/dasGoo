@@ -11,6 +11,7 @@ require component/movement
 require component/orientation
 require component/playerInput
 require component/screenBounce
+require component/collision
 
 
 def spawn_player(at: float2; var tex: ImageHandle)
@@ -22,6 +23,7 @@ def spawn_player(at: float2; var tex: ImageHandle)
     apply_decs_template(comp, [[ScreenBounce offset = float2(tex.width/2, tex.height/2)]])
     apply_decs_template(comp, [[PlayerInput]])
     apply_decs_template(comp, [[Drawable sprite = tex]])
+    apply_decs_template(comp, [[Collision radius = 0.5 * float(max(tex.width, tex.height))]])
 
 
 def rotate(v: float2; a: float)

@@ -9,6 +9,7 @@ require component/movement
 require component/health
 require component/shot
 require component/screenBounce
+require component/collision
 
 let ENEMY_INITIAL_HEALTH = 10.0
 
@@ -21,6 +22,7 @@ def spawn_enemy(at, vel: float2; var tex: ImageHandle)
     apply_decs_template(comp, [[ScreenBounce offset = float2(tex.width/2, tex.height/2)]])
     apply_decs_template(comp, [[Health hp = ENEMY_INITIAL_HEALTH]])
     apply_decs_template(comp, [[Drawable sprite = tex]])
+    apply_decs_template(comp, [[Collision radius = 0.5 * float(max(tex.width, tex.height))]])
 
 
 def is_hit(proj, recp, size: float2)
