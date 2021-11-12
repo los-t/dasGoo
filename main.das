@@ -6,6 +6,7 @@ require daslib/decs_boost
 require player
 require enemy
 require resources
+require debug
 
 var lastDt: float
 
@@ -30,6 +31,7 @@ def initialize(is_hard_reload: bool)
 [export]
 def act(dt: float)
   lastDt = dt
+  update_debug_toggles()
   decs_stage("read_input")
   decs_stage("apply_input")
   decs_stage("update")
@@ -40,5 +42,7 @@ def act(dt: float)
 def draw()
   enable_alpha_blend()
   decs_stage("draw")
+  if (isDebugDrawEnabled)
+    decs_stage("debug_draw")
   disable_alpha_blend()
   text_out(20, 20, "last dt = {lastDt}", 0xFFFFFFFF)
