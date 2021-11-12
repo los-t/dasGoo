@@ -18,7 +18,7 @@ let
   ROT_DELTA = 0.01 * PI
 
 let directions <- {{VK_H => DIR_WEST; VK_J => DIR_SOUTH; VK_K => DIR_NORTH; VK_L => DIR_EAST}}
-let rotations <- {{VK_Y => ROT_DELTA; VK_O => -ROT_DELTA}}
+let rotations <- {{VK_Y => -ROT_DELTA; VK_O => ROT_DELTA}}
 
 [decs(stage = read_input)]
 def update_player_input(var input: PlayerInput)
