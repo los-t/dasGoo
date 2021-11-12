@@ -21,3 +21,8 @@ def draw_positions(p: Position; o: Orientation)
     let radius = 2.0
     let offset = o.dir * float(i) * (radius * posRadius)
     circle(p.pos.x + offset.x, p.pos.y + offset.y, radius, 0xFFFFFF00)
+
+
+[decs(stage = debug_draw)]
+def draw_velocities(p: Position; v: Velocity)
+  fill_rect(p.pos.x + v.vel.x, p.pos.y + v.vel.y, 3.0, 3.0, 0xFFFF00FF)

@@ -11,8 +11,8 @@ struct PlayerInput
   fire: bool
 
 let
-  DIR_NORTH = float2( 0.0,-1.0)
-  DIR_SOUTH = float2( 0.0, 1.0)
+  DIR_NORTH = float2( 0.0, 1.0)
+  DIR_SOUTH = float2( 0.0,-1.0)
   DIR_EAST  = float2( 1.0, 0.0)
   DIR_WEST  = float2(-1.0, 0.0)
   ROT_DELTA = 0.01 * PI
