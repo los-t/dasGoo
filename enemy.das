@@ -5,6 +5,7 @@ require daslib/decs_boost
 
 require drawable
 require projectile
+require orientation
 require movement
 
 [decs_template]
@@ -17,6 +18,7 @@ def spawn_enemy(at, vel: float2; var tex: ImageHandle)
   create_entity <| @(eid, comp)
     set(comp, "eid", eid)
     apply_decs_template(comp, [[Position x = at.x, y = at.y]])
+    apply_decs_template(comp, [[Orientation]])
     apply_decs_template(comp, [[Velocity x = vel.x, y = vel.y]])
     apply_decs_template(comp, [[MovementLimits x = float(get_screen_width()),
                                                y = float(get_screen_height())]])
