@@ -9,11 +9,16 @@ require resources
 require weaponry
 require debug
 
-var lastDt: float
 
 let imagePaths <- {{ "player" => "res/playerShip3_red.png";
                      "laser" => "res/laserRed07.png";
                      "enemy"  => "res/ufoGreen.png" }}
+
+let INIT_WAVE_DELTA = 3.0
+let INIT_WAVE_COUNT = 10
+let MAX_WAVE_COUNT = 50
+var timeToNextWave: float
+var enemyCount: int
 
 [export]
 def initialize(is_hard_reload: bool)
@@ -22,16 +27,23 @@ def initialize(is_hard_reload: bool)
 
   load_images(imagePaths)
 
+  timeToNextWave = INIT_WAVE_DELTA
+  enemyCount = INIT_WAVE_COUNT
+
   restart()
   spawn_player(float2(100.0, 0.5 * float(get_screen_height())), get_image("player"))
-  for i in range(0, 10)
-    spawn_enemy(float2(i * 100, i * 20), float2(5.0, 1.5), get_image("enemy"))
+  spawn_enemy_wave(enemyCount)
   commit()
 
 
 [export]
 def act(dt: float)
-  lastDt = dt
+  timeToNextWave -= dt
+  if (timeToNextWave <= 0.0)
+    spawn_enemy_wave(enemyCount)
+    enemyCount += min(enemyCount / 2, MAX_WAVE_COUNT)
+    timeToNextWave = 2.0 * INIT_WAVE_DELTA * float(enemyCount/INIT_WAVE_COUNT)
+
   update_debug_toggles()
   decs_stage("read_input")
   decs_stage("apply_input")
@@ -47,4 +59,3 @@ def draw()
   if (isDebugDrawEnabled)
     decs_stage("debug_draw")
   disable_alpha_blend()
-  text_out(20, 20, "last dt = {lastDt}", 0xFFFFFFFF)
