@@ -5,11 +5,11 @@ require daslib/decs_boost
 
 require resources
 
-require drawable
+require component/drawable
 require projectile
-require movement
-require orientation
-require playerInput
+require component/movement
+require component/orientation
+require component/playerInput
 
 
 def spawn_player(at: float2; var tex: ImageHandle)

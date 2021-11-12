@@ -3,10 +3,10 @@ options indenting = 2
 require daslib/media
 require daslib/decs_boost
 
-require drawable
+require component/drawable
 require projectile
-require orientation
-require movement
+require component/orientation
+require component/movement
 
 [decs_template]
 struct Enemy

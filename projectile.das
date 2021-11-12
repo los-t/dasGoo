@@ -4,9 +4,9 @@ require daslib/math
 require daslib/media
 require daslib/decs_boost
 
-require drawable
-require orientation
-require movement
+require component/drawable
+require component/orientation
+require component/movement
 
 [decs_template]
 struct Projectile
