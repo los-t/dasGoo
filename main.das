@@ -10,7 +10,7 @@ require resources
 var lastDt: float
 
 let imagePaths <- {{ "player" => "res/playerShip3_red.png";
-                     "bullet" => "res/laserRed07.png";
+                     "laser" => "res/laserRed07.png";
                      "enemy"  => "res/ufoGreen.png" }}
 
 [export]

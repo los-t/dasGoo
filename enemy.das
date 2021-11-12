@@ -4,7 +4,7 @@ require daslib/media
 require daslib/decs_boost
 
 require drawable
-require bullet
+require projectile
 require movement
 
 [decs_template]
@@ -28,11 +28,11 @@ def spawn_enemy(at, vel: float2; var tex: ImageHandle)
 def update_enemy(var enemy: Enemy; pos: Position; img: Drawable; eid: EntityId)
   if (enemy.hp <= 0.0)
     delete_entity(eid)
-  query() <| $(var b: Bullet; bullet: Position)
+  query() <| $(var p: Projectile; at: Position)
     let halfSize = float2(0.5 * float(img.sprite.width), 0.5 * float(img.sprite.height))
-    let h = (bullet.x >= pos.x - halfSize.x) && (bullet.x <= pos.x + halfSize.x)
-    let v = (bullet.y >= pos.y - halfSize.y) && (bullet.y <= pos.y + halfSize.y)
+    let h = (at.x >= pos.x - halfSize.x) && (at.x <= pos.x + halfSize.x)
+    let v = (at.y >= pos.y - halfSize.y) && (at.y <= pos.y + halfSize.y)
     let isHit = h && v
     if (isHit)
-      enemy.hp -= b.damage
-      b.lifetime = 0.0
+      enemy.hp -= p.damage
+      p.lifetime = 0.0

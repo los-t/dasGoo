@@ -6,7 +6,7 @@ require daslib/decs_boost
 require resources
 
 require drawable
-require bullet
+require projectile
 require movement
 require playerInput
 
@@ -27,4 +27,4 @@ def apply_player_input(var vel: Velocity; pos: Position; input: PlayerInput)
   vel.x += input.dir.x
   vel.y += input.dir.y
   if (input.fire)
-    spawn_bullet(float2(pos.x, pos.y), float2(vel.x * 10.0, vel.y * 10.0), get_image("bullet"))
+    spawn_projectile(float2(pos.x, pos.y), float2(vel.x * 10.0, vel.y * 10.0), get_image("laser"))
