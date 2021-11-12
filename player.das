@@ -10,6 +10,7 @@ require projectile
 require component/movement
 require component/orientation
 require component/playerInput
+require component/screenBounce
 
 
 def spawn_player(at: float2; var tex: ImageHandle)
@@ -18,8 +19,7 @@ def spawn_player(at: float2; var tex: ImageHandle)
     apply_decs_template(comp, [[Position pos = at]])
     apply_decs_template(comp, [[Velocity]])
     apply_decs_template(comp, [[Orientation dir = float2(1.0, 0.0)]])
-    apply_decs_template(comp, [[MovementLimits x = float(get_screen_width()),
-                                               y = float(get_screen_height())]])
+    apply_decs_template(comp, [[ScreenBounce offset = float2(tex.width/2, tex.height/2)]])
     apply_decs_template(comp, [[PlayerInput]])
     apply_decs_template(comp, [[Drawable sprite = tex]])
 

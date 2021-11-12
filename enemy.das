@@ -4,13 +4,11 @@ require daslib/media
 require daslib/decs_boost
 
 require component/drawable
-require projectile
 require component/orientation
 require component/movement
-
-[decs_template]
-struct Enemy
-  hp: float
+require component/health
+require component/shot
+require component/screenBounce
 
 let ENEMY_INITIAL_HEALTH = 10.0
 
@@ -20,9 +18,8 @@ def spawn_enemy(at, vel: float2; var tex: ImageHandle)
     apply_decs_template(comp, [[Position pos = at]])
     apply_decs_template(comp, [[Orientation]])
     apply_decs_template(comp, [[Velocity vel = vel]])
-    apply_decs_template(comp, [[MovementLimits x = float(get_screen_width()),
-                                               y = float(get_screen_height())]])
-    apply_decs_template(comp, [[Enemy hp = ENEMY_INITIAL_HEALTH]])
+    apply_decs_template(comp, [[ScreenBounce offset = float2(tex.width/2, tex.height/2)]])
+    apply_decs_template(comp, [[Health hp = ENEMY_INITIAL_HEALTH]])
     apply_decs_template(comp, [[Drawable sprite = tex]])
 
 
@@ -34,10 +31,8 @@ def is_hit(proj, recp, size: float2)
 
 
 [decs(stage = update)]
-def update_enemy(var enemy: Enemy; p: Position; img: Drawable; eid: EntityId)
-  if (enemy.hp <= 0.0)
-    delete_entity(eid)
-  query() <| $(var proj: Projectile; at: Position)
+def update_enemy(var enemy: Health; p: Position; img: Drawable; eid: EntityId)
+  query() <| $(var shot: Shot; at: Position)
     if (is_hit(at.pos, p.pos, float2(img.sprite.width, img.sprite.height)))
-      enemy.hp -= proj.damage
-      proj.lifetime = 0.0
+      enemy.hp -= shot.damage
+      shot.damage = 0.0
