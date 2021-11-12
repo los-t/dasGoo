@@ -23,6 +23,7 @@ def spawn_player(at: float2; var tex: ImageHandle)
     apply_decs_template(comp, [[ScreenBounce offset = halfSize]])
     apply_decs_template(comp, [[PlayerInput]])
     apply_decs_template(comp, [[Drawable sprite = tex]])
+    apply_decs_template(comp, [[DrawLast]])
     apply_decs_template(comp, [[Collision radius = 0.5 * max(halfSize.x, halfSize.y)]])
     apply_decs_template(comp, [[Gun offset = gunPointOffset]])
 

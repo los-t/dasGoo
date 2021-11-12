@@ -29,6 +29,7 @@ def spawn_projectile(at, dir: float2; speed: float; var tex: ImageHandle)
                                            lifetime = PROJECTILE_LIFETIME]])
     apply_decs_template(comp, [[Shot damage = PROJECTILE_DAMAGE]])
     apply_decs_template(comp, [[Drawable sprite = tex]])
+    apply_decs_template(comp, [[DrawFirst]])
 
 
 [decs(stage = update)]
