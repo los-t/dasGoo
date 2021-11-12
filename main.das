@@ -7,11 +7,13 @@ require player
 require enemy
 require resources
 require weaponry
+require sky
 require debug
 
 
 let imagePaths <- {{ "player" => "res/playerShip3_red.png";
                      "laser" => "res/laserRed07.png";
+                     "star" => "res/blackSmoke10.png";
                      "enemy"  => "res/ufoGreen.png" }}
 
 let INIT_WAVE_DELTA = 3.0
@@ -26,11 +28,13 @@ def initialize(is_hard_reload: bool)
   set_window_title("DasHackathon")
 
   load_images(imagePaths)
+  load_sky()
 
   timeToNextWave = INIT_WAVE_DELTA
   enemyCount = INIT_WAVE_COUNT
 
   restart()
+  spawn_sky(25)
   spawn_player(float2(100.0, 0.5 * float(get_screen_height())), get_image("player"))
   spawn_enemy_wave(enemyCount)
   commit()
@@ -54,6 +58,7 @@ def act(dt: float)
 [export]
 def draw()
   enable_alpha_blend()
+  decs_stage("draw_background")
   decs_stage("draw_first")
   decs_stage("draw_last")
   if (isDebugDrawEnabled)

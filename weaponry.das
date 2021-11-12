@@ -28,7 +28,7 @@ def spawn_projectile(at, dir: float2; speed: float; var tex: ImageHandle)
     apply_decs_template(comp, [[RangedShot maxRange = PROJECTILE_MAX_RANGE,
                                            lifetime = PROJECTILE_LIFETIME]])
     apply_decs_template(comp, [[Shot damage = PROJECTILE_DAMAGE]])
-    apply_decs_template(comp, [[Drawable sprite = tex]])
+    apply_decs_template(comp, [[Drawable sprite = tex, color = 0xA0FFFFFF]])
     apply_decs_template(comp, [[DrawFirst]])
 
 

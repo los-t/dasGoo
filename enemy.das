@@ -5,6 +5,7 @@ require daslib/random
 require daslib/decs_boost
 
 require resources
+require grid
 
 require component/drawable
 require component/orientation
@@ -24,22 +25,13 @@ def spawn_enemy(at, vel: float2; var tex: ImageHandle)
     apply_decs_template(comp, [[Velocity vel = vel]])
     apply_decs_template(comp, [[ScreenBounce offset = float2(tex.width/2, tex.height/2)]])
     apply_decs_template(comp, [[Health hp = ENEMY_INITIAL_HEALTH]])
-    apply_decs_template(comp, [[Drawable sprite = tex]])
+    apply_decs_template(comp, [[Drawable sprite = tex, color = COLOR_WHITE]])
     apply_decs_template(comp, [[DrawLast]])
     apply_decs_template(comp, [[Collision radius = 0.5 * float(max(tex.width, tex.height))]])
 
 
 def spawn_enemy_wave(count: int)
-  let offs = 50
-  let w = get_screen_width() - 2 * offs
-  let h = get_screen_height() - 2 * offs
-  let hStep = w / count
-  let vStep = h / count
-  var grid: array<float2>
-  for i in range(0, count)
-    for j in range(0, count)
-      push(grid, float2(offs + i * hStep, offs + j * vStep))
-
+  var grid <- make_grid(count, 50)
   var i = 0
   while i < count
     let cell = floori(random_float(ENEMY_SPAWN_SEED) * float(length(grid)))
