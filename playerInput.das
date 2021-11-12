@@ -29,8 +29,17 @@ def update_player_input(var input: PlayerInput)
     input.throttle += dir.y
     input.strafe += dir.x
 
+  input.throttle += -get_axis(AXIS_PRIMARY_Y)
+  input.strafe += get_axis(AXIS_PRIMARY_X)
+
   input.yaw = 0.0
   for k, v in keys(rotations), values(rotations)
     input.yaw += get_key(k) ? v : 0.0
 
-  input.fire = get_key(VK_SPACE)
+  var dir = float2(get_axis(AXIS_SECONDARY_X), get_axis(AXIS_SECONDARY_Y))
+  let rot = dot(dir, float2(1.0, 0.0))
+  input.yaw += rot * ROT_DELTA
+
+  let triggerThres = 0.3
+  let rt = -1.0 * clamp(get_axis(AXIS_TRIGGERS), -1.0, 0.0)
+  input.fire = get_key(VK_SPACE) || (rt > triggerThres)
