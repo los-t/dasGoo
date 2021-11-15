@@ -13,6 +13,7 @@ require component/movement
 require component/health
 require component/screenBounce
 require component/collision
+require component/growth
 
 let ENEMY_INITIAL_HEALTH = 10.0
 var ENEMY_SPAWN_SEED = random_seed(13564242)
@@ -37,7 +38,8 @@ def spawn_enemy(at, vel: float2; var tex: ImageHandle)
     apply_decs_template(comp, [[Velocity vel = vel]])
     apply_decs_template(comp, [[ScreenBounce offset = halfSize]])
     apply_decs_template(comp, [[Health hp = ENEMY_INITIAL_HEALTH]])
-    apply_decs_template(comp, [[Drawable sprite = tex, color = 0xAADF23FF, scale = scale]])
+    apply_decs_template(comp, [[Growth delta=0.1*scale, result=scale]])
+    apply_decs_template(comp, [[Drawable sprite = tex, color = 0xAADF23FF, scale = 0.1*scale]])
     apply_decs_template(comp, [[DrawLast]])
     apply_decs_template(comp, [[Collision radius = 0.5 * max(halfSize.x, halfSize.y)]])
 

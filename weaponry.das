@@ -43,9 +43,8 @@ def shoot_gun(var g: Gun; p: Position; o: Orientation; v: Velocity)
 
 def is_hit(proj, recp, size: float2)
   let halfSize = 0.5 * size
-  let h = (proj.x >= recp.x - halfSize.x) && (proj.x <= recp.x + halfSize.x)
-  let v = (proj.y >= recp.y - halfSize.y) && (proj.y <= recp.y + halfSize.y)
-  return h && v
+  let hitRadius = min(halfSize.x, halfSize.y) * 0.8
+  return length(recp - proj) <= hitRadius
 
 
 [decs(stage = update)]
