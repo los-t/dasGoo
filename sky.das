@@ -23,9 +23,8 @@ def load_sky()
 
 
 def spawn_nebula(at: float2; var tex: ImageHandle)
-  var seed = random_seed(floori(at.x + at.y))
-  let dir = float2(random_float(seed), random_float(seed))
-  let color = uint(random_float(seed) * float(0xAA000000)) + 0x00FFFFFF
+  let dir = float2(random_float(STAR_SPAWN_SEED), random_float(STAR_SPAWN_SEED))
+  let color = uint(random_float(STAR_SPAWN_SEED) * float(0xAA000000)) + 0x00FFFFFF
   normalize(dir)
   create_entity <| @(eid, comp)
     set(comp, "eid", eid)
